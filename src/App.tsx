@@ -5,7 +5,7 @@ import "./App.css";
 function App() {
   const [text, setText] = useState("Take Your Time");
   const [seed, setSeed] = useState(0);
-  const graffitiRef = useRef(null);
+  const graffitiRef = useRef<HTMLDivElement>(null);
 
   const fonts = [
     "font-merriweather",
@@ -28,7 +28,8 @@ function App() {
     "text-black bg-red-600",
   ];
 
-  const randomFrom = (arr: number[] | string[]) => arr[Math.floor(Math.random() * arr.length)];
+  const randomFrom = (arr: number[] | string[]) =>
+    arr[Math.floor(Math.random() * arr.length)];
 
   const downloadImage = async () => {
     if (!graffitiRef.current) return;
@@ -84,7 +85,7 @@ function App() {
         value={text}
         onChange={(e) => setText(e.target.value)}
         placeholder="Type your graffiti... (Enter = new line)"
-        className="w-full max-w-md px-4 py-3 border-4 border-black rounded-none bg-white font-bold shadow-[6px_6px_0px_rgba(0,0,0,1)] focus:outline-none focus:ring-0"
+        className="w-full max-w-md px-4 py-3 border-4 border-black rounded-none bg-white font-bold shadow-[6px_6px_0px_rgba(0,0,0,1)] focus:outline-none focus:ring-0 mt-6"
         rows={3}
       />
 
@@ -104,6 +105,16 @@ function App() {
           Download
         </button>
       </div>
+
+      {/* GitHub link */}
+      <a
+        href="https://github.com/abn-oc/ptg"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-10 text-white font-bold underline hover:text-red-400"
+      >
+        GitHub
+      </a>
     </div>
   );
 }
