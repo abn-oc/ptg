@@ -28,13 +28,13 @@ function App() {
     "text-black bg-red-600",
   ]
 
-  const randomFrom = (arr: string | any[]) => arr[Math.floor(Math.random() * arr.length)]
+  const randomFrom = (arr) => arr[Math.floor(Math.random() * arr.length)]
 
   const downloadImage = async () => {
     if (!graffitiRef.current) return
     const dataUrl = await toPng(graffitiRef.current, {
       backgroundColor: "transparent",
-      pixelRatio: 2, // sharp export
+      pixelRatio: 2,
     })
     const link = document.createElement("a")
     link.download = "graffiti.png"
@@ -47,30 +47,34 @@ function App() {
       
       {/* Graffiti target with padding to prevent clipping */}
       <div ref={graffitiRef} className="bg-transparent p-8">
-        <h1 className="flex flex-wrap gap-2 text-6xl font-bold">
-          {text.split("").map((char, i) => {
-            if (char === " ") return <span key={i} className="w-6"></span>
-            const rotation = randomFrom(rotations)
-            return (
-              <span
-                key={i + "-" + seed}
-                className={`${randomFrom(fonts)} ${randomFrom(colorCombos)} px-2 inline-block`}
-                style={{ transform: `rotate(${rotation}deg)` }}
-              >
-                {char}
-              </span>
-            )
-          })}
+        <h1 className="flex flex-col gap-4 text-6xl font-bold">
+          {text.split("\n").map((line, lineIndex) => (
+            <div key={lineIndex} className="flex flex-wrap gap-2">
+              {line.split("").map((char, i) => {
+                if (char === " ") return <span key={i} className="w-6"></span>
+                const rotation = randomFrom(rotations)
+                return (
+                  <span
+                    key={`${lineIndex}-${i}-${seed}`}
+                    className={`${randomFrom(fonts)} ${randomFrom(colorCombos)} px-2 inline-block`}
+                    style={{ transform: `rotate(${rotation}deg)` }}
+                  >
+                    {char}
+                  </span>
+                )
+              })}
+            </div>
+          ))}
         </h1>
       </div>
 
-      {/* Input */}
-      <input
-        type="text"
+      {/* Multiline input (textarea) */}
+      <textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
-        placeholder="Type your graffiti..."
+        placeholder="Type your graffiti... (Enter = new line)"
         className="w-full max-w-md px-4 py-2 border-2 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+        rows={3}
       />
 
       {/* Buttons */}
